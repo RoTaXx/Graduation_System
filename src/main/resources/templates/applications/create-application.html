@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments :: head"></head>
+<body>
+<header th:replace="fragments :: header"></header>
+<h4>Create an application</h4>
+<div class="col-6">
+  <form action="#" th:action="@{/applications/create}" th:object="${application}" method="post">
+    <div class="form-group">
+      <div class="form-group">
+        <label for="theme">Theme</label>
+        <input class="form-control" type="text" th:field="*{theme}" placeholder="Theme" id="theme">
+        <span class="text-danger" th:if="${#fields.hasErrors('theme')}" th:errors="*{theme}">Theme Error</span>
+      </div>
+      <div class="form-group">
+        <label for="purpose">Purpose</label>
+        <input class="form-control" type="text" th:field="*{purpose}" placeholder="Purpose" id="purpose">
+        <span class="text-danger" th:if="${#fields.hasErrors('purpose')}" th:errors="*{purpose}">Purpose Error</span>
+      </div>
+      <div class="form-group">
+        <label for="tasks">Tasks</label>
+        <input class="form-control" type="text" th:field="*{tasks}" placeholder="Tasks" id="tasks">
+        <span class="text-danger" th:if="${#fields.hasErrors('tasks')}" th:errors="*{tasks}">Tasks Error</span>
+      </div>
+      <div class="form-group">
+        <label for="tasks">Technologies</label>
+        <input class="form-control" type="text" th:field="*{technologies}" placeholder="Technologies" id="technologies">
+        <span class="text-danger" th:if="${#fields.hasErrors('technologies')}" th:errors="*{technologies}">Technologies Error</span>
+      </div>
+      <div class="form-group">
+        <label for="status">Status</label>
+        <select class="form-control" th:field="${application.status}" id="status">
+          <option value="">Select Status</option>
+          <option th:each="status : ${status}" th:value="${status}" th:text="${status}"></option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="student">Student</label>
+        <select class="form-control" th:field="${application.student}" id="student">
+          <option value="">Select Student</option>
+          <option th:each="student : ${students}" th:value="${student.id}"
+                  th:text="${student.firstName}+ ' ' + ${student.lastName}"></option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="teacher">Teacher</label>
+        <select class="form-control" th:field="${application.teacher}" id="teacher">
+          <option value="">Select Teacher</option>
+          <option th:each="teacher : ${teachers}" th:value="${teacher.id}"
+                  th:text="${teacher.firstName}+ ' ' + ${teacher.lastName}"></option>
+        </select>
+      </div>
+    </div>
+    <button type="submit" class="btn btn-primary">Save application</button>
+  </form>
+</div>
+<footer th:replace="fragments :: footer"></footer>
+</body>
+</html>
