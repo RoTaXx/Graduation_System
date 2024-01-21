@@ -29,4 +29,11 @@ public class ApplicationApiController {
 
     @GetMapping("/{id}")
     public ApplicationDTO getApplicationById(@PathVariable long id) {return this.applicationService.getApplicationById(id);}
+
+    @GetMapping("/approved")
+    public List<ApplicationDTO> getApprovedApplications() {
+        return this.applicationService.getApprovedApplications();
+    }
 }
+
+
