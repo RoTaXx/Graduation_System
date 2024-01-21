@@ -1,6 +1,7 @@
 package com.graduation.graduation_system.service.impl;
 
 import com.graduation.graduation_system.data.entity.Application;
+import com.graduation.graduation_system.data.entity.enums.ApplicationStatus;
 import com.graduation.graduation_system.data.repository.ApplicationRepository;
 import com.graduation.graduation_system.dto.Application.ApplicationDTO;
 import com.graduation.graduation_system.dto.Application.CreateApplicationDTO;
@@ -72,5 +73,14 @@ public class ApplicationServiceImpl implements ApplicationService {
 
     @Override
     public List<TeacherDTO> getApplicationTeachers() { return teacherService.getTeachers(); }
+
+    @Override
+    public List<ApplicationDTO> getApprovedApplications() {
+        return applicationRepository.findByStatus(ApplicationStatus.APPROVED)
+                .stream()
+                .map(this::convertToApplicationDTO)
+                .collect(Collectors.toList());
+    }
+
     private ApplicationDTO convertToApplicationDTO(Application application) { return modelMapper.map(application, ApplicationDTO.class); }
 }

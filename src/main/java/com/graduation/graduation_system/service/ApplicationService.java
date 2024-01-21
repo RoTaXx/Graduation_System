@@ -19,5 +19,5 @@ public interface ApplicationService {
 
     void deleteApplication(long id);
 
-
+    List<ApplicationDTO> getApprovedApplications();
 }
