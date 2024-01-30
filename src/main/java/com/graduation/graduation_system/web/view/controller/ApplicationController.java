@@ -4,6 +4,9 @@ import com.graduation.graduation_system.data.entity.enums.ApplicationStatus;
 import com.graduation.graduation_system.dto.Application.ApplicationDTO;
 import com.graduation.graduation_system.dto.Application.CreateApplicationDTO;
 import com.graduation.graduation_system.dto.Application.UpdateApplicationDTO;
+import com.graduation.graduation_system.exceptions.ApplicationNotFoundException;
+import com.graduation.graduation_system.exceptions.StudentNotFoundException;
+import com.graduation.graduation_system.exceptions.TeacherNotFoundException;
 import com.graduation.graduation_system.service.ApplicationService;
 import com.graduation.graduation_system.web.view.model.Application.ApplicationViewModel;
 import com.graduation.graduation_system.web.view.model.Application.CreateApplicationViewModel;
@@ -79,7 +82,13 @@ public class ApplicationController {
         return "redirect:/applications";
     }
 
-    private ApplicationViewModel convertToApplicationViewModel(ApplicationDTO applicationtDTO) {
-        return modelMapper.map(applicationtDTO, ApplicationViewModel.class);
+    private ApplicationViewModel convertToApplicationViewModel(ApplicationDTO applicationDTO) {
+        return modelMapper.map(applicationDTO, ApplicationViewModel.class);
+    }
+
+    @ExceptionHandler({ApplicationNotFoundException.class, TeacherNotFoundException.class, StudentNotFoundException.class})
+    public String handleException(ApplicationNotFoundException exception, Model model) {
+        model.addAttribute("message", exception.getMessage());
+        return "/errors/application-errors";
     }
 }

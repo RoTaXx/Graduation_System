@@ -1,6 +1,8 @@
 package com.graduation.graduation_system.data.entity;
 
+import com.graduation.graduation_system.messages.EntityMessages;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -11,6 +13,9 @@ import lombok.Setter;
 @Entity
 @Table(name = "thesis_defense_info")
 public class ThesisDefenseInfo extends BaseEntity{
+
+    @Column(name = "grade")
+    @Size(min = 2, max = 6, message = EntityMessages.DefenseMessage.GradeValue)
     private Double grade;
 
     @OneToOne

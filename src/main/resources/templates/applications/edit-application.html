@@ -5,7 +5,7 @@
 <header th:replace="fragments :: header"></header>
 <h4>Edit the applicationDocument</h4>
 <div class="col-6">
-  <form action="#" th:action="@{/applications/update/{id}(id=${id})}" th:object="${applicationDocument}" method="post">
+  <form action="#" th:action="@{/applications/update/{id}(id=${id})}" th:object="${application}" method="post">
     <div class="form-group">
       <div class="form-group">
         <label for="theme">Theme</label>

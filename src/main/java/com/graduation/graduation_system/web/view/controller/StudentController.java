@@ -3,6 +3,9 @@ package com.graduation.graduation_system.web.view.controller;
 import com.graduation.graduation_system.dto.Student.CreateStudentDTO;
 import com.graduation.graduation_system.dto.Student.StudentDTO;
 import com.graduation.graduation_system.dto.Student.UpdateStudentDTO;
+import com.graduation.graduation_system.exceptions.ApplicationNotFoundException;
+import com.graduation.graduation_system.exceptions.StudentNotFoundException;
+import com.graduation.graduation_system.exceptions.TeacherNotFoundException;
 import com.graduation.graduation_system.service.StudentService;
 import com.graduation.graduation_system.web.view.model.Student.CreateStudentViewModel;
 import com.graduation.graduation_system.web.view.model.Student.StudentViewModel;
@@ -78,5 +81,11 @@ public class StudentController {
 
     private StudentViewModel convertToStudentViewModel(StudentDTO studentDTO) {
         return modelMapper.map(studentDTO, StudentViewModel.class);
+    }
+
+    @ExceptionHandler(StudentNotFoundException.class)
+    public String handleException(StudentNotFoundException exception, Model model) {
+        model.addAttribute("message", exception.getMessage());
+        return "/errors/student-errors";
     }
 }
