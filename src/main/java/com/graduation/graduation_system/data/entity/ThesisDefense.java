@@ -1,6 +1,8 @@
 package com.graduation.graduation_system.data.entity;
 
+import com.graduation.graduation_system.messages.EntityMessages;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -16,6 +18,8 @@ import java.util.List;
 @Table(name = "thesis_defense")
 public class ThesisDefense extends BaseEntity{
 
+    @Column(name = "startDate")
+    @NotNull(message = EntityMessages.CommonMessage.StartDateNotNull)
     private LocalDateTime defenseDate;
 
     /*@OneToMany(mappedBy = "thesisDefense")

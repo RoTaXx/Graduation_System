@@ -3,20 +3,27 @@ package com.graduation.graduation_system.web.view.model.Application;
 import com.graduation.graduation_system.data.entity.Student;
 import com.graduation.graduation_system.data.entity.Teacher;
 import com.graduation.graduation_system.data.entity.enums.ApplicationStatus;
+import com.graduation.graduation_system.messages.EntityMessages;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.*;
-
 @EqualsAndHashCode
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class CreateApplicationViewModel {
-    @NotBlank
+    @NotNull(message = EntityMessages.ApplicationMessage.SubjectNotNull)
+    @Size(min = 5, max = 30, message = EntityMessages.ApplicationMessage.SubjectLength)
     private String theme;
-    @NotBlank
+
+    @NotNull(message = EntityMessages.ApplicationMessage.PurposeNotNull)
+    @Size(min = 5, max = 50, message = EntityMessages.ApplicationMessage.PurposeLength)
     private String purpose;
-    @NotBlank
+
+    //@NotNull(message = EntityMessages.ApplicationMessage.TaskNotNull)
+    @Size(min = 5, max = 30, message = EntityMessages.ApplicationMessage.TaskLength)
     private String tasks;
     @NotBlank
     private String technologies;

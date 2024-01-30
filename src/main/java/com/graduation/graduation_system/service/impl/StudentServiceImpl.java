@@ -7,16 +7,21 @@ import com.graduation.graduation_system.dto.Application.ApplicationDTO;
 import com.graduation.graduation_system.dto.Student.CreateStudentDTO;
 import com.graduation.graduation_system.dto.Student.StudentDTO;
 import com.graduation.graduation_system.dto.Student.UpdateStudentDTO;
+import com.graduation.graduation_system.exceptions.StudentNotFoundException;
 import com.graduation.graduation_system.service.StudentService;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
+@Validated
 public class StudentServiceImpl implements StudentService {
 
     private final StudentRepository studentRepository;
@@ -31,13 +36,13 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public StudentDTO getStudentById(long id) {
+    public StudentDTO getStudentById(@Min(1) long id) {
         return modelMapper.map(studentRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Invalid student Id:" + id)), StudentDTO.class);
+                .orElseThrow(() -> new StudentNotFoundException("Invalid student Id:" + id)), StudentDTO.class);
     }
 
     @Override
-    public CreateStudentDTO createStudent(CreateStudentDTO createStudentDto) {
+    public CreateStudentDTO createStudent(@Valid CreateStudentDTO createStudentDto) {
         return modelMapper.map(
                 studentRepository.save(
                         modelMapper.map(createStudentDto, Student.class)), CreateStudentDTO.class);
@@ -45,11 +50,18 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public UpdateStudentDTO updateStudent(long id, UpdateStudentDTO updateStudentDto) {
-        Student student = modelMapper.map(getStudentById(id), Student.class);
-        student.setFNumber(updateStudentDto.getFNumber());
-        student.setFirstName(updateStudentDto.getFirstName());
-        student.setLastName(updateStudentDto.getLastName());
-        return modelMapper.map(studentRepository.save(student), UpdateStudentDTO.class);
+        try {
+            Student student = modelMapper.map(getStudentById(id), Student.class);
+            student.setFNumber(updateStudentDto.getFNumber());
+            student.setFirstName(updateStudentDto.getFirstName());
+            student.setLastName(updateStudentDto.getLastName());
+
+            return modelMapper.map(studentRepository.save(student), UpdateStudentDTO.class);
+        } catch (StudentNotFoundException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new RuntimeException("An error occurred while updating the student", e);
+        }
     }
 
     @Override
